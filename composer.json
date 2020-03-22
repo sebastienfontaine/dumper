@@ -1,0 +1,38 @@
+{
+    "name": "sebastienfontaine/dumper",
+    "description": "Database Dumper",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2",
+        "ext-json": "*",
+        "laravel/framework": "^7.0",
+        "spatie/db-dumper": "^2.15"
+    },
+    "authors": [
+        {
+            "name": "sebastienfontaine",
+            "email": "hello@sebastienfontaine.me"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SebastienFontaine\\Dumper\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "SebastienFontaine\\Dumper\\DumperServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

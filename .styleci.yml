@@ -1,0 +1,72 @@
+preset: psr2
+enabled:
+  - align_double_arrow
+  - align_equals
+  - align_phpdoc
+  - alpha_ordered_imports
+  - blank_line_before_return
+  - concat_with_spaces
+  - function_typehint_space
+  - hash_to_slash_comment
+  - linebreak_after_opening_tag
+  - lowercase_cast
+  - method_separation
+  - new_with_braces
+  - no_blank_lines_after_class_opening
+  - no_blank_lines_after_phpdoc
+  - no_blank_lines_after_return
+  - no_blank_lines_after_throw
+  - no_blank_lines_between_imports
+  - no_blank_lines_between_traits
+  - no_empty_comment
+  - no_empty_phpdoc
+  - no_empty_statement
+  - no_extra_block_blank_lines
+  - no_extra_consecutive_blank_lines
+  - no_leading_import_slash
+  - no_multiline_whitespace_before_semicolons
+  - no_php4_constructor
+  - no_short_bool_cast
+  - no_short_echo_tag
+  - no_singleline_whitespace_before_semicolons
+  - no_spaces_inside_offset
+  - no_trailing_comma_in_singleline_array
+  - no_unreachable_default_argument_value
+  - no_unused_imports
+  - no_useless_else
+  - no_useless_return
+  - no_whitespace_before_comma_in_array
+  - no_whitespace_in_blank_line
+  - normalize_index_brace
+  - object_operator_without_whitespace
+  - ordered_class_elements
+  - phpdoc_add_missing_param_annotation
+  - phpdoc_align
+  - phpdoc_indent
+  - phpdoc_order
+  - phpdoc_scalar
+  - phpdoc_separation
+  - phpdoc_trim
+  - phpdoc_types_order
+  - return_type_declaration
+  - self_accessor
+  - semicolon_after_instruction
+  - short_array_syntax
+  - short_scalar_cast
+  - single_blank_line_before_namespace
+  - single_line_class_definition
+  - single_quote
+  - space_after_semicolon
+  - standardize_not_equals
+  - strict_comparison
+  - trim_array_spaces
+  - whitespace_after_comma_in_array
+finder:
+  exclude:
+    - node_modules
+    - storage
+    - vendor
+  name:
+    - "*.php"
+  not-name:
+    - "*.blade.php"
