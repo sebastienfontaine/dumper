@@ -7,9 +7,10 @@ use SebastienFontaine\Dumper\Events\DumperBackupStarted;
 class DumperNormalBackup extends DumperBackup
 {
     /**
+     * @return array
      * @throws \Exception
      */
-    public function backup()
+    public function backup(): array
     {
         $fileName = $this->destinationPath . '/' . DumperDatabaseLogic::generateBackupFileName($this->dumperDatabaseInfo);
 
@@ -20,5 +21,7 @@ class DumperNormalBackup extends DumperBackup
 
             $this->files[] = $fileName;
         }, 1000);
+
+        return $this->files;
     }
 }
