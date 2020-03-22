@@ -7,8 +7,9 @@ use SebastienFontaine\Dumper\Events\DumperBackupStarted;
 class DumperNormalBackup extends DumperBackup
 {
     /**
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
     public function backup(): array
     {
