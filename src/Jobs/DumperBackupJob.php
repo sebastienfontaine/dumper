@@ -39,13 +39,11 @@ class DumperBackupJob implements ShouldQueue
 
     public function handle()
     {
-        if (app()->environment($this->dumperDatabaseInfo->environments) === false) {
-            exit;
-        }
-
         try {
             $files = resolve(DumperFactory::class)->create($this->dumperDatabaseInfo, $this->destinationPath)->backup();
         } catch (Exception $exception) {
+            report($exception);
+
             event(new DumperBackupFailed($this->dumperDatabaseInfo, $exception));
 
             return;

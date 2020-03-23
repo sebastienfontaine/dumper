@@ -12,6 +12,9 @@ class DumperMainConfiguration
     /** @var string */
     public $destinationPath;
 
+    /** @var array */
+    public $environments;
+
     /** @var Collection */
     public $databases;
 
@@ -24,6 +27,7 @@ class DumperMainConfiguration
 
         $this->enabled         = $configurations['enabled'];
         $this->destinationPath = $configurations['destination_path'];
+        $this->environments    = $configurations['environments'] ?? ['prod'];
 
         $this->databases = collect();
 

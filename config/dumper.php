@@ -3,6 +3,10 @@
 return [
     'enabled' => true,
 
+    'environments' => [
+        env('APP_ENV', 'prod'),
+    ],
+
     'destination_path' => env('DUMPER_LOCAL_PATH', storage_path('dumper/backups')),
     'upload_enabled'   => true,
     'cloud_path'       => env('DUMPER_CLOUD_PATH', 'db-backup'),
@@ -14,10 +18,6 @@ return [
 
     'databases' => [
         [
-            'environments' => [
-                'local',
-            ],
-
             'connection' => env('DB_CONNECTION', 'mysql'),
             'host'       => env('DB_HOST', 'localhost'),
             'port'       => env('DB_PORT', '3306'),

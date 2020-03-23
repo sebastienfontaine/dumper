@@ -46,12 +46,11 @@ class DumperDatabaseOptions
         $this->retry           = $configurations['retry'] ?? 0;
         $this->extraOption     = $configurations['extra_option'] ?? '';
         $this->withData        = $configurations['with_data'] ?? true;
+        $this->separateBackups = [];
 
         if (isset($configurations['separate_backups']) === false) {
             return;
         }
-
-        $this->separateBackups = [];
 
         foreach ($configurations['separate_backups'] as $separateBackupInfo) {
             $this->separateBackups[] = new DumperDatabaseSeparateOptions($separateBackupInfo);

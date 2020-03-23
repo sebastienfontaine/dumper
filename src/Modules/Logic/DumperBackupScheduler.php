@@ -6,7 +6,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use SebastienFontaine\Dumper\Jobs\DumperBackupJob;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseInfo;
 use SebastienFontaine\Dumper\Modules\Entities\DumperMainConfiguration;
-use SebastienFontaine\Dumper\Modules\Storage\DumperStorage;
 
 class DumperBackupScheduler
 {
@@ -24,8 +23,9 @@ class DumperBackupScheduler
         /** @var DumperDatabaseInfo $database */
         foreach ($dumperConfiguration->databases as $database) {
             $schedule
-                ->job(new DumperBackupJob($database, DumperStorage::current()->destinationPath))
-                ->cron($database->options->cron);
+                ->job(new DumperBackupJob($database, $dumperConfiguration->destinationPath))
+                ->cron($database->options->cron)
+                ->environments($dumperConfiguration->environments);
         }
     }
 }

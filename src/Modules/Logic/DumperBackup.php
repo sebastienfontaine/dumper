@@ -49,7 +49,8 @@ abstract class DumperBackup
             ->setUserName($dumperDatabaseInfo->username)
             ->setHost($dumperDatabaseInfo->host)
             ->setPassword($dumperDatabaseInfo->password)
-            ->setPort($dumperDatabaseInfo->port);
+            ->setPort($dumperDatabaseInfo->port)
+            ->setDumpBinaryPath($dumperDatabaseInfo->dumpBinaryPath);
 
         if ($dumperDatabaseInfo->options->withCompression === true) {
             $this->dumper->useCompressor(new GzipCompressor());

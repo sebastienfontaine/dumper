@@ -25,6 +25,9 @@ class DumperDatabaseInfo
     /** @var string */
     public $database;
 
+    /** @var string */
+    public $dumpBinaryPath;
+
     /** @var DumperDatabaseOptions */
     public $options;
 
@@ -35,13 +38,13 @@ class DumperDatabaseInfo
      */
     public function __construct(array $configurations)
     {
-        $this->environments = $configurations['environments'];
-        $this->connection   = $configurations['connection'];
-        $this->host         = $configurations['host'];
-        $this->port         = $configurations['port'];
-        $this->username     = $configurations['username'];
-        $this->password     = $configurations['password'];
-        $this->database     = $configurations['database'];
+        $this->connection     = $configurations['connection'];
+        $this->host           = $configurations['host'];
+        $this->port           = $configurations['port'];
+        $this->username       = $configurations['username'];
+        $this->password       = $configurations['password'];
+        $this->database       = $configurations['database'];
+        $this->dumpBinaryPath = $configurations['dump_binary_path'] ?? '/usr/bin';
 
         $this->options = new DumperDatabaseOptions($configurations['options']);
     }

@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use SebastienFontaine\Dumper\Jobs\DumperBackupJob;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseInfo;
 use SebastienFontaine\Dumper\Modules\Entities\DumperMainConfiguration;
-use SebastienFontaine\Dumper\Modules\Storage\DumperStorage;
 
 class DumperBackupCommand extends Command
 {
@@ -37,7 +36,7 @@ class DumperBackupCommand extends Command
 
         /** @var DumperDatabaseInfo $database */
         foreach ($dumperConfiguration->databases as $database) {
-            $backupJob = new DumperBackupJob($database, DumperStorage::current()->destinationPath);
+            $backupJob = new DumperBackupJob($database, $dumperConfiguration->destinationPath);
 
             dispatch($backupJob);
         }

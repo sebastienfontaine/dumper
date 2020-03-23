@@ -15,7 +15,7 @@ class DumperBackupFailed
     /**
      * @var DumperDatabaseInfo
      */
-    public $database;
+    public $dumperDatabaseInfo;
 
     /**
      * @var Exception
@@ -30,7 +30,7 @@ class DumperBackupFailed
      */
     public function __construct(DumperDatabaseInfo $dumperDatabase, Exception $exception)
     {
-        $this->database  = $dumperDatabase;
-        $this->exception = $exception;
+        $this->dumperDatabaseInfo = $dumperDatabase;
+        $this->exception          = $exception;
     }
 }

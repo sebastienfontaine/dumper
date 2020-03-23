@@ -23,5 +23,9 @@ class DumperEventHandler
                 dispatch($job);
             }
         });
+
+        $events->listen(DumperBackupFailed::class, function (DumperBackupFailed $event) {
+            logger()->error('Backup failed for database : ' . $event->dumperDatabaseInfo->database);
+        });
     }
 }
