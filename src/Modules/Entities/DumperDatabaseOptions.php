@@ -31,6 +31,12 @@ class DumperDatabaseOptions
     /** @var bool */
     public $withData;
 
+    /** @var string */
+    public $heartbeatUrl;
+
+    /** @var DumperUploadInfo */
+    public $uploadInfo;
+
     /**
      * DumperDatabase constructor.
      *
@@ -46,7 +52,9 @@ class DumperDatabaseOptions
         $this->retry           = $configurations['retry'] ?? 0;
         $this->extraOption     = $configurations['extra_option'] ?? '';
         $this->withData        = $configurations['with_data'] ?? true;
+        $this->heartbeatUrl    = $configurations['heartbeat_url'];
         $this->separateBackups = [];
+        $this->uploadInfo      = new DumperUploadInfo($configurations['upload'] ?? []);
 
         if (isset($configurations['separate_backups']) === false) {
             return;

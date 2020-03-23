@@ -2,10 +2,13 @@
 
 namespace SebastienFontaine\Dumper\Console;
 
+use Exception;
 use Illuminate\Console\Command;
-use SebastienFontaine\Dumper\Jobs\DumperBackupJob;
+use SebastienFontaine\Dumper\Events\DumperBackupFailed;
+use SebastienFontaine\Dumper\Events\DumperBackupSucceeded;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseInfo;
 use SebastienFontaine\Dumper\Modules\Entities\DumperMainConfiguration;
+use SebastienFontaine\Dumper\Modules\Factories\DumperFactory;
 
 class DumperBackupCommand extends Command
 {
@@ -14,7 +17,7 @@ class DumperBackupCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'dumper:backup';
+    protected $signature = 'dumper:backup {--name=}';
 
     /**
      * The console command description.
@@ -34,11 +37,23 @@ class DumperBackupCommand extends Command
             return;
         }
 
-        /** @var DumperDatabaseInfo $database */
-        foreach ($dumperConfiguration->databases as $database) {
-            $backupJob = new DumperBackupJob($database, $dumperConfiguration->destinationPath);
+        /** @var DumperDatabaseInfo $dumperDatabaseInfo */
+        $dumperDatabaseInfo = $dumperConfiguration->databases->filter(function (DumperDatabaseInfo $dumperDatabaseInfo) {
+            return $dumperDatabaseInfo->name === $this->option('name');
+        })->first();
 
-            dispatch($backupJob);
+        try {
+            $files = resolve(DumperFactory::class)->create($dumperDatabaseInfo, $dumperConfiguration->destinationPath)->backup();
+        } catch (Exception $exception) {
+            report($exception);
+
+            event(new DumperBackupFailed($dumperDatabaseInfo, $exception));
+
+            return;
         }
+
+        $this->info('[' . $dumperDatabaseInfo->database . '] ' . $dumperDatabaseInfo->name . ' dumped successfully !');
+
+        event(new DumperBackupSucceeded($dumperDatabaseInfo, $files));
     }
 }

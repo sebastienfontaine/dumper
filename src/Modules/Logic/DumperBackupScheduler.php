@@ -3,7 +3,6 @@
 namespace SebastienFontaine\Dumper\Modules\Logic;
 
 use Illuminate\Console\Scheduling\Schedule;
-use SebastienFontaine\Dumper\Jobs\DumperBackupJob;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseInfo;
 use SebastienFontaine\Dumper\Modules\Entities\DumperMainConfiguration;
 
@@ -20,12 +19,16 @@ class DumperBackupScheduler
             return;
         }
 
-        /** @var DumperDatabaseInfo $database */
-        foreach ($dumperConfiguration->databases as $database) {
-            $schedule
-                ->job(new DumperBackupJob($database, $dumperConfiguration->destinationPath))
-                ->cron($database->options->cron)
+        /** @var DumperDatabaseInfo $dumperDatabaseInfo */
+        foreach ($dumperConfiguration->databases as $dumperDatabaseInfo) {
+            $dumperSchedule = $schedule
+                ->command('dumper:backup --name=' . $dumperDatabaseInfo->name)
+                ->cron($dumperDatabaseInfo->options->cron)
                 ->environments($dumperConfiguration->environments);
+
+            if ($dumperDatabaseInfo->options->heartbeatUrl !== null && $dumperDatabaseInfo->options->heartbeatUrl !== '') {
+                $dumperSchedule->thenPing($dumperDatabaseInfo->options->heartbeatUrl);
+            }
         }
     }
 }

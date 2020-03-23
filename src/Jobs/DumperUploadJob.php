@@ -45,14 +45,16 @@ class DumperUploadJob implements ShouldQueue
     {
         $backupFile = new File($this->filePath);
 
-        $cloudPath = config('dumper.cloud_path') . '/' . $backupFile->getFilename();
+        $cloudPath = $this->dumperDatabaseInfo->options->uploadInfo->cloudPath . '/' . $backupFile->getFilename();
 
-        $filePath = Storage::disk(config('dumper.cloud_disk'))
+        $filePath = Storage::disk($this->dumperDatabaseInfo->options->uploadInfo->cloudDisk)
             ->putFileAs(
                 '',
                 $backupFile,
                 $cloudPath,
-                ['visibility' => config('dumper.cloud_visibility')]
+                [
+                    'visibility' => $this->dumperDatabaseInfo->options->uploadInfo->cloudVisibility
+                ]
             );
 
         if ($filePath !== false) {

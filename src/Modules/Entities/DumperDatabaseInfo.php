@@ -11,6 +11,9 @@ class DumperDatabaseInfo
     public $connection;
 
     /** @var string */
+    public $name;
+
+    /** @var string */
     public $host;
 
     /** @var string */
@@ -38,6 +41,7 @@ class DumperDatabaseInfo
      */
     public function __construct(array $configurations)
     {
+        $this->name           = $configurations['name'];
         $this->connection     = $configurations['connection'];
         $this->host           = $configurations['host'];
         $this->port           = $configurations['port'];

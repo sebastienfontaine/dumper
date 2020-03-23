@@ -13,7 +13,7 @@ class DumperEventHandler
     public function subscribe(Dispatcher $events)
     {
         $events->listen(DumperBackupSucceeded::class, function (DumperBackupSucceeded $event) {
-            if (config('dumper.upload_enabled') === false) {
+            if ($event->dumperDatabaseInfo->options->uploadInfo->enabled === false) {
                 return;
             }
 
