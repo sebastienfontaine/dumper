@@ -52,7 +52,7 @@ class DumperDatabaseOptions
         $this->retry           = $configurations['retry'] ?? 0;
         $this->extraOption     = $configurations['extra_option'] ?? '';
         $this->withData        = $configurations['with_data'] ?? true;
-        $this->heartbeatUrl    = $configurations['heartbeat_url'];
+        $this->heartbeatUrl    = $configurations['heartbeat_url'] ?? null;
         $this->separateBackups = [];
         $this->uploadInfo      = new DumperUploadInfo($configurations['upload'] ?? []);
 
