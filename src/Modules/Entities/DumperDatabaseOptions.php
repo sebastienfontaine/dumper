@@ -28,6 +28,9 @@ class DumperDatabaseOptions
     /** @var array */
     public $separateBackups;
 
+    /** @var bool */
+    public $withData;
+
     /**
      * DumperDatabase constructor.
      *
@@ -42,6 +45,7 @@ class DumperDatabaseOptions
         $this->cron            = $configurations['cron'] ?? '';
         $this->retry           = $configurations['retry'] ?? 0;
         $this->extraOption     = $configurations['extra_option'] ?? '';
+        $this->withData        = $configurations['with_data'] ?? true;
 
         if (isset($configurations['separate_backups']) === false) {
             return;

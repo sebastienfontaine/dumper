@@ -29,11 +29,11 @@ abstract class DumperDatabaseLogic
         }
 
         if ($dumperDatabase->options->withCompression === true) {
-            $fileNames[] = 'backup.sql.gz';
+            $fileNames[] = '.sql.gz';
         } else {
-            $fileNames[] = 'backup.sql';
+            $fileNames[] = '.sql';
         }
 
-        return implode('-', $fileNames);
+        return Str::replaceLast('-', '', implode('-', $fileNames));
     }
 }

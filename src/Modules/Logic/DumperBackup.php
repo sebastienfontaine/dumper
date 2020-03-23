@@ -63,6 +63,10 @@ abstract class DumperBackup
             $this->dumper->includeTables($dumperDatabaseInfo->options->includeTables);
         }
 
+        if ($dumperDatabaseInfo->options->withData === false) {
+            $this->dumper->addExtraOption('--no-data');
+        }
+
         $this->dumper->addExtraOption($dumperDatabaseInfo->options->extraOption);
     }
 

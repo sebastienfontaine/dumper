@@ -2,6 +2,7 @@
 
 namespace SebastienFontaine\Dumper\Modules\Logic;
 
+use Exception;
 use SebastienFontaine\Dumper\Events\DumperBackupStarted;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseSeparateOptions;
 use Spatie\DbDumper\DbDumper;
@@ -9,42 +10,14 @@ use Spatie\DbDumper\DbDumper;
 class DumperSeparateBackup extends DumperBackup
 {
     /**
-     * @throws \Spatie\DbDumper\Exceptions\CannotSetParameter
+     * @throws Exception
      *
      * @return array
      */
     public function backup(): array
     {
-        $excludeTables = collect($this->dumperDatabaseInfo->options->separateBackups)->pluck('tables')->flatten();
-
-        $excludeTables = $excludeTables->merge(collect($this->dumperDatabaseInfo->options->excludeTables))->flatten()->toArray();
-
-        $mainDbDumper = clone $this->dumper;
-
-        $mainDbDumper->excludeTables($excludeTables);
-
-        $separateBackupList = [];
-
-        /** @var DumperDatabaseSeparateOptions $separateBackup */
-        foreach ($this->dumperDatabaseInfo->options->separateBackups as $separateBackup) {
-            $separateBackupDumper = clone $this->dumper;
-            $separateBackupDumper->excludeTables([]);
-            $separateBackupDumper->includeTables($separateBackup->tables);
-
-            $separateBackupList[] = [
-                'dumper'  => $separateBackupDumper,
-                'options' => $separateBackup,
-            ];
-        }
-
-        retry($this->dumperDatabaseInfo->options->retry, function () use (&$mainDbDumper, &$separateBackupList) {
-            $fileName = $this->destinationPath . '/' . DumperDatabaseLogic::generateBackupFileName($this->dumperDatabaseInfo);
-
-            event(new DumperBackupStarted($this->dumperDatabaseInfo, $fileName));
-
-            $mainDbDumper->dumpToFile($fileName);
-
-            $this->files[] = $fileName;
+        retry($this->dumperDatabaseInfo->options->retry, function () {
+            $separateBackupList = $this->prepareSeparateBackupList();
 
             foreach ($separateBackupList as $separateBackupData) {
                 /** @var DbDumper $separateDbDumper */
@@ -64,5 +37,39 @@ class DumperSeparateBackup extends DumperBackup
         }, 1000);
 
         return $this->files;
+    }
+
+    /**
+     * @throws \Spatie\DbDumper\Exceptions\CannotSetParameter
+     *
+     * @return array
+     */
+    private function prepareSeparateBackupList(): array
+    {
+        $separateBackupList = [];
+
+        /** @var DumperDatabaseSeparateOptions $separateBackupOptions */
+        foreach ($this->dumperDatabaseInfo->options->separateBackups as $separateBackupOptions) {
+            $separateBackupDumper = clone $this->dumper;
+
+            if (count($separateBackupOptions->excludeTables) > 0) {
+                $separateBackupDumper->excludeTables($separateBackupOptions->excludeTables);
+            }
+
+            if (count($separateBackupOptions->includeTables) > 0) {
+                $separateBackupDumper->includeTables($separateBackupOptions->includeTables);
+            }
+
+            if ($separateBackupOptions->withData === false) {
+                $separateBackupDumper->addExtraOption('--no-data');
+            }
+
+            $separateBackupList[] = [
+                'dumper'  => $separateBackupDumper,
+                'options' => $separateBackupOptions,
+            ];
+        }
+
+        return $separateBackupList;
     }
 }

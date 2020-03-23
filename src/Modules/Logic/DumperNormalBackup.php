@@ -13,9 +13,9 @@ class DumperNormalBackup extends DumperBackup
      */
     public function backup(): array
     {
-        $fileName = $this->destinationPath . '/' . DumperDatabaseLogic::generateBackupFileName($this->dumperDatabaseInfo);
+        retry($this->dumperDatabaseInfo->options->retry, function () {
+            $fileName = $this->destinationPath . '/' . DumperDatabaseLogic::generateBackupFileName($this->dumperDatabaseInfo);
 
-        retry($this->dumperDatabaseInfo->options->retry, function () use ($fileName) {
             event(new DumperBackupStarted($this->dumperDatabaseInfo, $fileName));
 
             $this->dumper->dumpToFile($fileName);

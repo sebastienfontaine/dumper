@@ -12,7 +12,7 @@ return [
     'backup_queue' => env('DUMPER_BACKUP_QUEUE', 'backup-queue'),
     'upload_queue' => env('DUMPER_UPLOAD_QUEUE', 'upload-queue'),
 
-    'databases'    => [
+    'databases' => [
         [
             'environments' => [
                 'local',
@@ -28,15 +28,29 @@ return [
             'options' => [
                 'separate_backups' => [
                     [
-                        'suffix' => 'migrations',
-                        'tables' => [
-                            'migrations',
-                        ],
+                        'suffix' => 'complete',
                     ],
+                    //[
+                    //    'suffix' => 'without-migrations',
+                    //    'exclude_tables' => [
+                    //        'migrations',
+                    //    ],
+                    //],
+                    //[
+                    //    'suffix' => 'migrations-without-data',
+                    //    'with_data' => false,
+                    //    'include_tables' => [
+                    //        'migrations',
+                    //    ],
+                    //],
                 ],
 
                 'exclude_tables' => [
-                    'failed_jobs',
+                    //'failed_jobs',
+                ],
+
+                'include_tables' => [
+                    //'users',
                 ],
 
                 'suffix'           => '',

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\File;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\File as FileManipulation;
 use Illuminate\Support\Facades\Storage;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseInfo;
 
@@ -55,7 +56,7 @@ class DumperUploadJob implements ShouldQueue
             );
 
         if ($filePath !== false) {
-            Storage::disk('local')->delete($this->filePath);
+            FileManipulation::delete($this->filePath);
         }
     }
 }

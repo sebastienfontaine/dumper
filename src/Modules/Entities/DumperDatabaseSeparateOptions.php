@@ -10,6 +10,15 @@ class DumperDatabaseSeparateOptions
     /** @var string */
     public $suffix;
 
+    /** @var array */
+    public $includeTables;
+
+    /** @var array */
+    public $excludeTables;
+
+    /** @var bool */
+    public $withData;
+
     /**
      * DumperDatabase constructor.
      *
@@ -17,7 +26,10 @@ class DumperDatabaseSeparateOptions
      */
     public function __construct(array $configurations)
     {
-        $this->suffix = $configurations['suffix'] ?? '';
-        $this->tables = $configurations['tables'] ?? [];
+        $this->suffix        = $configurations['suffix'] ?? '';
+        $this->tables        = $configurations['tables'] ?? [];
+        $this->includeTables = $configurations['include_tables'] ?? [];
+        $this->excludeTables = $configurations['exclude_tables'] ?? [];
+        $this->withData      = $configurations['with_data'] ?? true;
     }
 }
