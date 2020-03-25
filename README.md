@@ -12,7 +12,7 @@ composer require sebastienfontaine/dumper
 Publish config file
 
 ```bash
-php artisan dumper:publish
+php artisan dumper:publish --name=backup-name
 ```
 
 ## Usage

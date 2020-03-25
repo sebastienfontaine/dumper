@@ -2,9 +2,11 @@
 
 namespace SebastienFontaine\Dumper\Modules\Logic;
 
+use Illuminate\Support\Facades\File;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseInfo;
 use SebastienFontaine\Dumper\Modules\Factories\DumperDriverFactory;
 use Spatie\DbDumper\Compressors\GzipCompressor;
+use Exception;
 
 abstract class DumperBackup
 {
@@ -35,6 +37,7 @@ abstract class DumperBackup
      * @param string             $destinationPath
      *
      * @throws \Spatie\DbDumper\Exceptions\CannotSetParameter
+     * @throws Exception
      */
     public function __construct(DumperDatabaseInfo $dumperDatabaseInfo, string $destinationPath)
     {
@@ -42,7 +45,9 @@ abstract class DumperBackup
 
         $this->destinationPath = $destinationPath;
 
-        exec('mkdir -p ' . $this->destinationPath);
+        if (File::ensureDirectoryExists($this->destinationPath, 0755, true) === false) {
+            throw new Exception('Destination path is not valid');
+        }
 
         $this->dumper = DumperDriverFactory::create($dumperDatabaseInfo->connection)
             ->setDbName($dumperDatabaseInfo->database)
