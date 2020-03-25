@@ -2,11 +2,11 @@
 
 namespace SebastienFontaine\Dumper\Modules\Logic;
 
+use Exception;
 use Illuminate\Support\Facades\File;
 use SebastienFontaine\Dumper\Modules\Entities\DumperDatabaseInfo;
 use SebastienFontaine\Dumper\Modules\Factories\DumperDriverFactory;
 use Spatie\DbDumper\Compressors\GzipCompressor;
-use Exception;
 
 abstract class DumperBackup
 {
