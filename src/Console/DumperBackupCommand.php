@@ -42,9 +42,19 @@ class DumperBackupCommand extends Command
             return $dumperDatabaseInfo->name === $this->option('name');
         })->first();
 
+        if ($dumperDatabaseInfo === null) {
+            $this->error($this->option('name') . ' does not exist.');
+
+            return;
+        }
+
         try {
+            $this->info('[' . $dumperDatabaseInfo->database . '] ' . $dumperDatabaseInfo->name . ' dump starting...');
+
             $files = resolve(DumperFactory::class)->create($dumperDatabaseInfo, $dumperConfiguration->destinationPath)->backup();
         } catch (Exception $exception) {
+            $this->error('[' . $dumperDatabaseInfo->database . '] ' . $dumperDatabaseInfo->name . ' failed !');
+
             report($exception);
 
             event(new DumperBackupFailed($dumperDatabaseInfo, $exception));
